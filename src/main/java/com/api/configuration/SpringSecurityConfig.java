@@ -54,7 +54,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
         .logoutSuccessUrl("/index")
         .invalidateHttpSession(true)
         .permitAll()
-    .and()
+     .and()
         .csrf()
         .disable();
 
