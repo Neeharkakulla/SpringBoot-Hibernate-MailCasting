@@ -2,6 +2,7 @@ package com.api.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,22 @@ public class BinService {
 	@Autowired
 	BinDao bindao;
 	
+	private Logger logger=Logger.getLogger(getClass().getName());
+
 	public  void deleteByBinId(int id) {
+		logger.info("\nPermanently Deleting mail from bin id :"+id);
 		bindao.deleteById(id);
 	}
 	public  BinModel getMailById(int id) {
 		BinModel mail=bindao.findById(id);
-		
+		logger.info("\nGetting binn mail by id:"+id);
 		return mail;
 
 	}
 	
 	public  List<BinModel> getBinMailsByMailId(String usermail){
 		List<BinModel> list=bindao.findByUsermail(usermail);
+		logger.info("\nGetting all bin mails of "+usermail);
 			if(list.size()>0)
 			return list.stream().sorted((m1,m2)->-m1.getDate().compareTo(m2.getDate()))
 					.collect(Collectors.toCollection(ArrayList::new));

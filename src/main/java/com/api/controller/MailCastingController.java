@@ -1,15 +1,23 @@
 package com.api.controller;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.api.model.SentBoxModel;
@@ -35,20 +43,39 @@ public class MailCastingController {
 	UserService userService;
 	@Autowired
 	SendMessage messageService;
-
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
+	
+	private Logger logger=Logger.getLogger(getClass().getName());
+	
 //Header Mapping	
 	
-	@GetMapping(value="/")
-	public String show() {
-		return "redirect:index";
-	}
+
+	
 	@GetMapping(value="/index")
-	public ModelAndView showIndex()  {
-		return new ModelAndView("index","user",new UserModel());
+	public ModelAndView showIndex(@RequestParam(value = "error", required = false) String error,Model m)  {
+		logger.info("\nInside index");
+		if(error!=null) {
+			String errorMsg="Please check your Email and Password";
+			logger.info("\nThere is an error while logging in \nError : "+errorMsg);
+			m.addAttribute("serverMessage", errorMsg);
+		}
+		
+		return new ModelAndView("index");
 	}
 	
+	
 	@GetMapping(value="/home")
-	public ModelAndView showHome(@ModelAttribute("usermail") String usermail) {
+	public ModelAndView showHome(Model m) {
+		logger.info("\nLogin Succesful");
+		logger.info("\nInside Home");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	      if (!(auth instanceof AnonymousAuthenticationToken)) {
+	        UserDetails userDetail = (UserDetails) auth.getPrincipal();	
+	        m.addAttribute("usermail", userDetail.getUsername());
+	      }
+	      String usermail=m.getAttribute("usermail").toString();
+	      logger.info("\nSession Attribute UserName :" + m.getAttribute("usermail"));
 		return new ModelAndView("home","mails",inboxService.getAllMailsByEmail(usermail));
 	}
 	
@@ -77,6 +104,7 @@ public class MailCastingController {
 	public ModelAndView showRegisterPage(){
 		return new ModelAndView("Register","user",new UserModel());
 	}
+	
 	@GetMapping(value="/contactus")
 	public ModelAndView showContactUs(){
 		return new ModelAndView("contactus");
@@ -85,10 +113,15 @@ public class MailCastingController {
 	
 //send mail	
 	@PostMapping(value="/composeEmail")
-	private ModelAndView composeEmail(@ModelAttribute("usermail")String usermail,@ModelAttribute("mail")SentBoxModel mail)  {
-		
-			messageService.sendMsg(mail);
+	private ModelAndView composeEmail(@ModelAttribute("usermail")String usermail,@ModelAttribute("mail")SentBoxModel mail,Model m)  {
+		logger.info("\nInside Compose Email");
+			if(messageService.sendMsg(mail))
 			return new ModelAndView("home","mails",inboxService.getAllMailsByEmail(usermail));
+			else {
+				
+				m.addAttribute("serverMesssage","Receiver Not Found");
+				return new ModelAndView("compose","mail",mail);
+			}
 		
 		}
 	
@@ -149,43 +182,28 @@ public class MailCastingController {
 	}
 	
 		
+
+//register User	
+	@RequestMapping(value="/register",method=RequestMethod.POST)
+	private ModelAndView registerUser(@ModelAttribute("user") UserModel user,BindingResult br)  {
 		
-//User login/logout and register
-	@PostMapping(value="/login")
-	public ModelAndView  login(@ModelAttribute("user")UserModel user,Model m) {
-		
-		
-		boolean status=userService.checkLogin(user.getEmail(),user.getPassword());
-		if(status==true){
-			m.addAttribute("usermail", user.getEmail());
-			return showHome(user.getEmail());
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			if(userService.register(user))
+			{
 			
-		}
-		else{
-			String Error="Please check your Email and Password";
-			return new ModelAndView("index","serverMessage",Error);					
-		}
-	}
-	
-	@GetMapping(value="/logout")
-	private ModelAndView logOut(Model m,@ModelAttribute("usermail") String usermail, WebRequest request, SessionStatus status)  {
-		status.setComplete();
-	    request.removeAttribute("user", WebRequest.SCOPE_SESSION);
-			String Error="You have been sucessfully logged out";
-			m.addAttribute("serverMessage",Error);
-						
-			return new ModelAndView("index","user",new UserModel());
-		
-	}
-	
-	@PostMapping(value="/register")
-	private ModelAndView registerUser(@ModelAttribute("user") UserModel user)  {
 			String register= "You are Successfully registered";
 			
 			return new ModelAndView("index","serverMessage",register);
+			}
+			else
+			{
+				String register= "User Email Already Taken";
+				
+				return new ModelAndView("Register","serverMessage",register);
+			}
 		
 	}
-	
+		
 //password Change Request	
 	@PostMapping(value="/validate")
 	private ModelAndView validatePassword(Model m,@RequestParam("id")String id,@ModelAttribute("usermail") String usermail,@RequestParam("password")String password) {
