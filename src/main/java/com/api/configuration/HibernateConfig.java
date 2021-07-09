@@ -20,13 +20,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages="com.api")
 @PropertySource(value="classpath:application.properties")
 public class HibernateConfig {
-	
-	
-	
+		
 	@Autowired
     Environment environment;
  
-    //--------------------
     private final String PROPERTY_DRIVER = "spring.datasource.driver-class-name";
 	private final String PROPERTY_URL = "spring.datasource.url";
 	private final String PROPERTY_USERNAME = "spring.datasource.user";
@@ -47,16 +44,17 @@ public class HibernateConfig {
 		return ds;
 	}
 
+	@Bean
 	Properties hibernateProps() {
 		 Properties properties = new Properties();
 	        properties.put(PROPERTY_DIALECT, environment.getRequiredProperty("hibernate.dialect"));
 	        properties.put(PROPERTY_SHOW_SQL, environment.getRequiredProperty("hibernate.show_sql"));
-	        properties.put(PROPERTY_FORMAT_SQL, environment.getRequiredProperty("hibernate.format_sql"));
-	        properties.put(PROPERTY_DDL_AUTO, environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+	        //properties.put(PROPERTY_FORMAT_SQL, environment.getRequiredProperty("hibernate.format_sql"));
+	        //properties.put(PROPERTY_DDL_AUTO, environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
 	        return properties;
 	}
 
-		@Bean
+	@Bean
 	LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 	
 		LocalContainerEntityManagerFactoryBean lfb = new LocalContainerEntityManagerFactoryBean();

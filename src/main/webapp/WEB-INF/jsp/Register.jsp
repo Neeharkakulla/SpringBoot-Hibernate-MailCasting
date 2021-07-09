@@ -99,26 +99,26 @@
 										<tr><td>EmailId:</td></tr>
 										<tr><td><form:input class="inputBox" path="email" required="required"/>
 										<span style="color:red">${serverMessage}</span><br/>
-										<form:errors path = "email" cssClass = "error" /><br/></td></tr>
+										<form:errors path = "email" style="color:red" /><br/></td></tr>
 
 										<tr><td>Password: </td></tr>
 										<tr><td><form:password class="inputBox" path="password" required="required"/><br/>
-										<form:errors path = "password" cssClass = "error" /><br/></td></tr>
+										<form:errors path = "password" style="color:red" /><br/></td></tr>
 										<tr><td>Name: </td></tr>
 										<tr><td><form:input class="inputBox" path="name" required="required"/><br/>
-										<form:errors path = "name" cssClass = "error" /><br/></td></tr>
+										<form:errors path = "name" style="color:red" /><br/></td></tr>
 										
 										<tr><td>Gender: Male<form:radiobutton path="gender" value="male"/>
 											Female<form:radiobutton path="gender" value="female" required="required"/><br/>
-											<form:errors path = "gender" cssClass = "error" /><br/>
+											<form:errors path = "gender" style="color:red" /><br/>
 											</td>
 										</tr>
 										<tr><td>Contact Number:</td></tr>
-										<tr><td> <form:input class="inputBox" path="contact" required="required"/><br/>
-										<form:errors path = "contact" cssClass = "error" /><br/></td></tr>
+										<tr><td> <form:input class="inputBox" type="number"  path="contact" required="required"/><br/>
+										<form:errors path = "contact" style="color:red"/><br/></td></tr>
 										<tr><td>Country: </td></tr>
 										<tr><td><form:input class="inputBox" path="country" required="required"/><br/>
-										<form:errors path = "country" cssClass = "error" /><br/></td></tr>
+										<form:errors path = "country" style="color:red" /><br/></td></tr>
 										<tr><td><input type="submit" value="Submit" class="btn-signin"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<a href="index" class="btn-login">Login</a></td></tr>
 									</table>

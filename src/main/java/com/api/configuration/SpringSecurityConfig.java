@@ -66,6 +66,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
 		return new BCryptPasswordEncoder();
 	}
 	
+	@Bean
 	public AuthenticationProvider authProvider() {	
 		
 		DaoAuthenticationProvider provider=new DaoAuthenticationProvider();

@@ -16,20 +16,24 @@ import com.api.model.SentBoxModel;
 @Service
 @Transactional
 public class SendMessage {
- @Autowired
- InBoxDao inboxdao;
- @Autowired
- SentBoxDao sentboxdao;
- @Autowired
- UserDao userdao;
- private Logger logger=Logger.getLogger(getClass().getName());
- public  boolean sendMsg(SentBoxModel mail){
-	 logger.info("\n"+mail.getSender() +"is Trying to send mail to "+mail.getReciever());
-		if(userdao.findByEmail(mail.getReciever())==null) {
-			logger.info("\n"+mail.getReciever()+" is not found");
-			return false;
-		}
-		
+	 @Autowired
+	 InBoxDao inboxdao;
+	 @Autowired
+	 SentBoxDao sentboxdao;
+	 @Autowired
+	 UserDao userdao;
+	 
+	 private Logger logger=Logger.getLogger(getClass().getName());
+	 
+	 public  boolean sendMsg(SentBoxModel mail){
+		 
+		 logger.info("\n"+mail.getSender() +"is Trying to send mail to "+mail.getReciever());
+		 
+		 if(userdao.findByEmail(mail.getReciever())==null) {
+				logger.info("\n"+mail.getReciever()+" is not found");
+				return false;
+		 	}
+			
 		java.util.Date sqdate=Calendar.getInstance().getTime();
 		java.sql.Timestamp sqlTime=new java.sql.Timestamp(sqdate.getTime());
 		
@@ -43,7 +47,7 @@ public class SendMessage {
 		inboxmail.setSubject(mail.getSubject());
 		inboxmail.setDate(sqlTime);
 		
-		
+	
 		inboxdao.save(inboxmail);
 		logger.info("\nMail send to "+mail.getReciever()+" inbox");
 		

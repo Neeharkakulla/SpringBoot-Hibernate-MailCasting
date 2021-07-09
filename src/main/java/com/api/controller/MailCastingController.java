@@ -1,9 +1,14 @@
 package com.api.controller;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.logging.Logger;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.api.model.SentBoxModel;
 import com.api.model.UserModel;
@@ -27,6 +33,8 @@ import com.api.service.InBoxService;
 import com.api.service.SendMessage;
 import com.api.service.SentBoxService;
 import com.api.service.UserService;
+
+import javassist.NotFoundException;
 
 @ComponentScan(basePackages = {"com.api"})
 @Controller
@@ -69,14 +77,35 @@ public class MailCastingController {
 	public ModelAndView showHome(Model m) {
 		logger.info("\nLogin Succesful");
 		logger.info("\nInside Home");
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	      if (!(auth instanceof AnonymousAuthenticationToken)) {
-	        UserDetails userDetail = (UserDetails) auth.getPrincipal();	
-	        m.addAttribute("usermail", userDetail.getUsername());
-	      }
-	      String usermail=m.getAttribute("usermail").toString();
-	      logger.info("\nSession Attribute UserName :" + m.getAttribute("usermail"));
-		return new ModelAndView("home","mails",inboxService.getAllMailsByEmail(usermail));
+		String usermail=(String) m.getAttribute("usermail");
+		
+		if(usermail==null) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        
+			if ((auth!=null)
+	        		&&(auth instanceof UsernamePasswordAuthenticationToken)
+	        		&&auth.isAuthenticated())
+	        {
+	         
+	          UserDetails userDetail = (UserDetails) auth.getPrincipal();	
+	          usermail=userDetail.getUsername();
+	          
+	          m.addAttribute("usermail", usermail);
+	          
+	        
+	     
+	          logger.info("\nSession Attribute UserName :" + m.getAttribute("usermail"));
+	        
+	          return new ModelAndView("home","mails",inboxService.getAllMailsByEmail(usermail));
+		
+	       }
+	        
+	       else
+	    	   return new ModelAndView("index","serverMessage","Please Login to continue");
+	       
+	    }
+		else
+			return new ModelAndView("home","mails",inboxService.getAllMailsByEmail(usermail));
 	}
 	
 	@GetMapping(value="/bin")
@@ -106,8 +135,10 @@ public class MailCastingController {
 	}
 	
 	@GetMapping(value="/contactus")
-	public ModelAndView showContactUs(){
-		return new ModelAndView("contactus");
+	public ModelAndView showContactUs(@ModelAttribute("usermail") String usermail){
+		SentBoxModel mail=new SentBoxModel(usermail);
+		mail.setReciever("helpdesk@mailcasting.com");
+		return new ModelAndView("contactus","mail",mail);
 	}
 	
 	
@@ -164,7 +195,7 @@ public class MailCastingController {
 	}
 
 	
-//retrive from bin
+//Retrieve from bin
 	@GetMapping(value="/retriveMail")
 	private ModelAndView retriveFromBin(@ModelAttribute("usermail")String usermail,@RequestParam("id")String id) {
 			
@@ -185,8 +216,11 @@ public class MailCastingController {
 
 //register User	
 	@RequestMapping(value="/register",method=RequestMethod.POST)
-	private ModelAndView registerUser(@ModelAttribute("user") UserModel user,BindingResult br)  {
-		
+	private ModelAndView registerUser(@Valid @ModelAttribute("user")UserModel user,BindingResult br)  {
+			
+			if(br.hasErrors())
+				return new ModelAndView("Register");
+			
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			if(userService.register(user))
 			{
@@ -230,7 +264,12 @@ public class MailCastingController {
 	
 	}
 
+//Not-Found 404
+	  @RequestMapping(value = "/**/{[path:[^\\.]*}")
+	    public void notFound() throws NotFoundException {
 
+		  throw new NotFoundException("Page is removed or doesn't exists");
+	    }
 		
 }
 

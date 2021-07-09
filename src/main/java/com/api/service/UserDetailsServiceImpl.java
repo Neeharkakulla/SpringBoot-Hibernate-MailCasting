@@ -16,8 +16,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
 		UserModel user=userdao.findByEmail(username);
+		
 		UserDetailsImpl userDetails=null;
+		
 		if(user!=null) {
 			userDetails=new UserDetailsImpl();
 			userDetails.setUser(user);
@@ -25,6 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		else {
 			throw new UsernameNotFoundException(username+" user doesn't not exists");
 		}
+		
 		return userDetails;
 
 	}

@@ -22,9 +22,11 @@ public class SentBoxService {
 	private Logger logger=Logger.getLogger(getClass().getName());
 
 	public  void deleteById(int id) {
+		
 		logger.info("\nSentBoxMail adding to bin with id "+id);
+		
 		sentdao.deleteById(id);
-		}
+	}
 	
 	public  List<SentBoxModel> getAllMailsByEmail(String sender){
 		List<SentBoxModel> list=sentdao.findBySender(sender);
@@ -33,19 +35,25 @@ public class SentBoxService {
 			return list.stream().
 					sorted((m1,m2)->-(m1.getDate()).compareTo((m2.getDate())))
 					.collect(Collectors.toCollection(ArrayList::new));
+		
 		logger.info("\nGetting Sentbox Mails of "+sender);
+		
 		return list;
 	}
 	
 	public  SentBoxModel getMailById(int id) {
+		
 		SentBoxModel mail=sentdao.findById(id);
+		
 		logger.info("\nGetting Sentbox Emails by id : "+id);
 		
 		return mail;
-		}
+	}
 
 	public  void retriveMail(SentBoxModel mail) {
+		
 		logger.info("\nRetriving mail to sentbox from bin");
+		
 		sentdao.save(mail);
 	}
 
