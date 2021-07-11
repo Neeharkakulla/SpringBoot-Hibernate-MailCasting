@@ -1,18 +1,18 @@
 package com.api.controller;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class MailCastingErrorResponse {
 	
 	private int status;
 	private String message;
-	private Timestamp timeStamp;
+	private  LocalDateTime dateAndTime;
 	
-	public MailCastingErrorResponse(int status, String message, Timestamp timeStamp) {
+	public MailCastingErrorResponse(int status, String message, LocalDateTime dateAndTime) {
 		super();
 		this.status = status;
 		this.message = message;
-		this.timeStamp = timeStamp;
+		this.dateAndTime = dateAndTime;
 	}
 	public int getStatus() {
 		return status;
@@ -26,15 +26,16 @@ public class MailCastingErrorResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public Timestamp getTimeStamp() {
-		return timeStamp;
+	
+	public LocalDateTime getDateAndTime() {
+		return dateAndTime;
 	}
-	public void setTimeStamp(Timestamp timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setDateAndTime(LocalDateTime dateAndTime) {
+		this.dateAndTime = dateAndTime;
 	}
 	@Override
 	public String toString() {
-		return "MailCastingErrorResponse [status=" + status + ", message=" + message + ", timeStamp=" + timeStamp + "]";
+		return "MailCastingErrorResponse [status=" + status + ", message=" + message + ", dateAndTime=" + dateAndTime + "]";
 	}
 
 

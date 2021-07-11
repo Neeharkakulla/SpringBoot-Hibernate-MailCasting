@@ -1,13 +1,10 @@
 package com.api.controller;
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.api.model.SentBoxModel;
 import com.api.model.UserModel;
@@ -34,9 +30,7 @@ import com.api.service.SendMessage;
 import com.api.service.SentBoxService;
 import com.api.service.UserService;
 
-import javassist.NotFoundException;
 
-@ComponentScan(basePackages = {"com.api"})
 @Controller
 @SessionAttributes("usermail")
 public class MailCastingController {
@@ -264,12 +258,6 @@ public class MailCastingController {
 	
 	}
 
-//Not-Found 404
-	  @RequestMapping(value = "/**/{[path:[^\\.]*}")
-	    public void notFound() throws NotFoundException {
-
-		  throw new NotFoundException("Page is removed or doesn't exists");
-	    }
 		
 }
 

@@ -114,7 +114,7 @@
 											</td>
 										</tr>
 										<tr><td>Contact Number:</td></tr>
-										<tr><td> <form:input class="inputBox" type="number"  path="contact" required="required"/><br/>
+										<tr><td> <form:input class="inputBox" value="/" type="number"  path="contact" required="required"/><br/>
 										<form:errors path = "contact" style="color:red"/><br/></td></tr>
 										<tr><td>Country: </td></tr>
 										<tr><td><form:input class="inputBox" path="country" required="required"/><br/>

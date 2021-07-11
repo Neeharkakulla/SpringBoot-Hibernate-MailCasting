@@ -1,46 +1,66 @@
 package com.api.controller;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
-import org.apache.jasper.JasperException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpSessionRequiredException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-
-import javassist.NotFoundException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class MailCastingExceptionHandler {
-	
-	
-	
 		
 	@ExceptionHandler
-	public ModelAndView handleException(NotFoundException e){
+	public ModelAndView handleExceptionNoHandlerFoundException(NoHandlerFoundException e){
 		
-		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), new Timestamp(Calendar.getInstance().getTime().getTime())); 
+		String errorMessage="The page you are looking for is removed or doesn't exists";
+		
+		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.NOT_FOUND.value(), errorMessage, LocalDateTime.now()); 
 
 		return new ModelAndView("error","error",error);
 			
 	}
 	
 	@ExceptionHandler
-	public ModelAndView handleException(NumberFormatException e){
+	public ModelAndView handleExceptionMissingServletRequestParameterException(MissingServletRequestParameterException e) {
 		
-		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Exception", new Timestamp(Calendar.getInstance().getTime().getTime())); 
+		String errorMessage="Bad request try again after some time";
+		
+		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage, LocalDateTime.now()); 
+
+		return new ModelAndView("error","error",error);
+
+	}
+	@ExceptionHandler
+	public ModelAndView handleExceptionHttpSessionRequiredException(HttpSessionRequiredException e) {
+		String errorMessage="Internal Server Exception processing failed please login and try again";
+		
+		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage, LocalDateTime.now()); 
+		
+		return new ModelAndView("error","error",error);
+		
+	}
+	
+	@ExceptionHandler
+	public ModelAndView handleExceptionNumberFormatException(NumberFormatException e){
+		
+		String errorMessage="Internal Server Exception processing failed";
+		
+		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage, LocalDateTime.now()); 
 		
 		return new ModelAndView("error","error",error);
 			
 	}
 	
 	@ExceptionHandler
-	public ModelAndView handleException(ClassCastException e){
+	public ModelAndView handleExceptionClassCastException(ClassCastException e){
 		
+		String errorMessage="Internal Server Exception processing failed";
 		
-		
-		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Exception", new Timestamp(Calendar.getInstance().getTime().getTime())); 
+		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage, LocalDateTime.now()); 
 		
 		return new ModelAndView("error","error",error);
 		
@@ -49,28 +69,25 @@ public class MailCastingExceptionHandler {
 	@ExceptionHandler
 	public ModelAndView handleException(NullPointerException e){
 		
-		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Exception", new Timestamp(Calendar.getInstance().getTime().getTime())); 
+		String errorMessage="Internal Server Exception processing failed";
+		
+		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage, LocalDateTime.now()); 
 		
 		return new ModelAndView("error","error",error);
 		
 	}
 	
-	@ExceptionHandler
-	public ModelAndView handleException(JasperException e){
-		
-		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Exception", new Timestamp(Calendar.getInstance().getTime().getTime())); 
-		
-		return new ModelAndView("error","error",error);
-				
-	}
 	
 	@ExceptionHandler
 	public ModelAndView handleException(Exception e){
 		
-		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Exception", new Timestamp(Calendar.getInstance().getTime().getTime())); 
+		String errorMessage="Unexpected Internal Server Exception processing failed caused by :";
+		
+		MailCastingErrorResponse error=new MailCastingErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage+"\n"+e.getMessage(), LocalDateTime.now()); 
 		
 		return new ModelAndView("error","error",error);
 			
 	}
 	
+		
 }
