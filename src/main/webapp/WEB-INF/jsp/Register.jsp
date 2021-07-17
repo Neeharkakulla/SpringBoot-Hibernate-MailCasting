@@ -89,28 +89,36 @@
 						
 					</div>
 					<div class="main-col-2">
-
+									
+									
 									<h3 style="color:#007897;">Registration Form</h3><br>
 									<div>
 																		
 								<form:form action="register" method="post" modelAttribute="user">
 									<table style="table-layout: fixed;">
 										<tr><td>EmailId:</td></tr>
-										<tr><td><form:input class="inputBox" path="email"/><br/><br/></td></tr>
+										<tr><td><form:input class="inputBox" path="email" required="required"/>
+										<span style="color:red">${serverMessage}</span><br/>
+										<form:errors path = "email" style="color:red" /><br/></td></tr>
 
 										<tr><td>Password: </td></tr>
-										<tr><td><form:password class="inputBox" path="password"/><br/><br/></td></tr>
+										<tr><td><form:password class="inputBox" path="password" required="required"/><br/>
+										<form:errors path = "password" style="color:red" /><br/></td></tr>
 										<tr><td>Name: </td></tr>
-										<tr><td><form:input class="inputBox" path="name"/><br/><br/></td></tr>
+										<tr><td><form:input class="inputBox" path="name" required="required"/><br/>
+										<form:errors path = "name" style="color:red" /><br/></td></tr>
 										
 										<tr><td>Gender: Male<form:radiobutton path="gender" value="male"/>
-											Female<form:radiobutton path="gender" value="female"/><br/><br/>
+											Female<form:radiobutton path="gender" value="female" required="required"/><br/>
+											<form:errors path = "gender" style="color:red" /><br/>
 											</td>
 										</tr>
 										<tr><td>Contact Number:</td></tr>
-										<tr><td> <form:input class="inputBox" path="contact"/><br/><br/></td></tr>
+										<tr><td> <form:input class="inputBox" value="/" type="number"  path="contact" required="required"/><br/>
+										<form:errors path = "contact" style="color:red"/><br/></td></tr>
 										<tr><td>Country: </td></tr>
-										<tr><td><form:input class="inputBox" path="country"/><br/><br/></td></tr>
+										<tr><td><form:input class="inputBox" path="country" required="required"/><br/>
+										<form:errors path = "country" style="color:red" /><br/></td></tr>
 										<tr><td><input type="submit" value="Submit" class="btn-signin"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<a href="index" class="btn-login">Login</a></td></tr>
 									</table>

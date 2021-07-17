@@ -44,10 +44,7 @@
 				border-radius: 5px;
 			}
 		</style>
-			<%
-				if(session.getAttribute("usermail")==null)
-					response.sendRedirect("index");
-			%>
+			
 <div class="main">
 	<div class="main-col-1">
 		<h2>Welcome to Mailservices!</h2>
@@ -65,7 +62,8 @@
 		 
 		 <tr><td>From&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;${mail.sender} <form:hidden path="sender" /><br/></td></tr>
 		 
-	 <tr><td>To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <form:input path="reciever"/><br/></td></tr>
+	 <tr><td>To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <form:input path="reciever"/>
+	 <span style="color:red">${serverMesssage}</span><br/></td></tr>
 	 <tr><td>Subject:<br/></td></tr>
 	 <tr><td><form:input path="subject" class="inputBox"/></td></tr>
 	 <tr><td>Message:<br/></td></tr>

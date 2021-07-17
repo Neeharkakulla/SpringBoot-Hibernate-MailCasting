@@ -97,7 +97,7 @@
 										<div>
 											
 											
-				<form:form action="login" method="post" modelAttribute="user">
+				<form action="login" method="post" >
 			
 						<table style="table-layout: fixed">
 
@@ -105,16 +105,16 @@
 										<td>Email id :</td>
 									</tr>
 										<tr>
-										<td> <form:input class="inputBox"  path="email"/><br></td>
+										<td> <input type="text"  class="inputBox"  name="email" required="required"/><br></td>
 										</tr>
 			
 									<tr><td>Password:</td></tr>
-									<tr><td> <form:password class="inputBox" path="password"/><br></td></tr>
+									<tr><td> <input type="password"  class="inputBox" name="password" required="required"/><br></td></tr>
 				
 									<tr><td><br><input class="btn-login" type="submit" value="Sign in">&nbsp; &nbsp; &nbsp;  &nbsp;  &nbsp; 
 										 <a href="register-page" class="btn-signin">Don't have an account?</a> </td></tr>
 						</table>
-				</form:form>
+				</form>
 
 						</div>
 						

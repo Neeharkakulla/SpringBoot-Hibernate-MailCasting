@@ -8,9 +8,8 @@ import com.api.model.BinModel;
 
 public interface BinDao extends CrudRepository<BinModel, Integer> {
 
-	List<BinModel> findByUsermail(String usermail);
-	
+	List<BinModel> findByUsermail(String usermail);	
 	BinModel findById(int id);
-	
+
 
 }

@@ -5,24 +5,43 @@
 <%@ page isELIgnored="false" %>
 <jsp:include page="header.jsp"></jsp:include>
 <style>
-.main{
-	width: 100vw;
-	display: flex;
-}
-.main-col-1{
-	display: inline-block;
-	width: 40%;
-	border:1px solid;
-	height: 100vh;
-}
-.main-col-2{
-	width: 60%;
-	display: inline-block;
+	.main{
+		width: 100vw;
+		display: flex;
+	}
+	.main-col-1{
+		display: inline-block;
+		width: 40%;
+		border:1px solid;
+		height: auto;
+		min-height:100vh;
+		
+	}
+	.main-col-2{
+		width: 60%;
+		display: inline-block;	
+		border: 1px solid;
+		height: auto;
+		min-height:100vh;
 	
-	border: 1px solid;
-	height: 100vh;
+	}
+.heading{
 	
-}
+	background-color: #546b45;
+	color:white;
+	}
+	.mails:hover{
+	background-color: #ffd4fd;
+	
+	
+	}
+	
+	.deletelink
+	{
+	color:red;
+	}
+	
+	
 
 </style>
 			<%
@@ -48,16 +67,18 @@
 					<h6>Sent Box</h6>
 					<table border=4 cellspacing='4' cellpadding='5'>
 		
-						<tr>
-						<td>Reciever&nbsp;	&nbsp;</td>
-						<td>SUBJECT</td><th>MESSAGE	&nbsp; 	&nbsp;</td>
-						<td>DATE OF RECIEVING 	&nbsp;	&nbsp;</td>
-						<td>Delete</td>
+					<tr class="heading">
+						<th>Sender</th>
+						<th>SUBJECT</th>
+						<th>MESSAGE	</th>
+						<th>DATE OF RECIEVING </th>
+						<th>Delete</th>
+						
 						</tr>
 			<c:forEach var="m" items="${mails}">	
 		
 		
-		<tr onclick='viewSentMail(${m.id})'>
+		<tr onclick='viewSentMail(${m.id})' class="mails">
 
 		<c:if test="${m.reciever.length()>=5}">
 			<td> ${ m.reciever.substring(0,5)}....</td>
@@ -80,7 +101,7 @@
 			
 		<td><fmt:formatDate type="both" dateStyle="short" timeStyle="short"  value="${m.date}" />  </td>
 		
-		<td><a href='deleteSentboxMail?id=${m.id}'> Delete</a></td>
+		<td><a class="deletelink" href='deleteSentboxMail?id=${m.id}'> Delete</a></td>
 
 	</tr>
 								
