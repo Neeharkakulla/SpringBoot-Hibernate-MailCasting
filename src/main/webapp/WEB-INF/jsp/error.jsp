@@ -14,7 +14,7 @@
 <p>Status code : ${error.status }</p>
 <p>Message : ${error.message }</p>
 <p>TimeStamp : ${error.dateAndTime } </p>
-<a href="index">click here to home</a>
+<a href="redirectToindex">click here to home</a>
 </center>
 </body>
 </html>

@@ -52,7 +52,10 @@ public class MailCastingController {
 	
 //Header Mapping	
 	
-
+	@GetMapping(value="/redirectToindex")
+	public String redirectToindex() {
+		return "redirect:/index";
+	}
 	
 	@GetMapping(value="/index")
 	public ModelAndView showIndex(@RequestParam(value = "error", required = false) String error,Model m)  {

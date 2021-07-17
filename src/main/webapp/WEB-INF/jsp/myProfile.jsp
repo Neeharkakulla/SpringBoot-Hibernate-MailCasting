@@ -9,6 +9,9 @@
 .main{
 		width: 100vw;
 		display: flex;
+		background-color: white;
+		color:#a32727;
+		font-size: 18px;
 	}
 	.main-col-1{
 		display: inline-block;
@@ -22,10 +25,27 @@
 		height: 100vh;
 		
 	}
-	.main-col-2 h5{
-	margin-left:12%;
-	}
+	.main-col-2 h5
+	{
 	
+	margin-left:12%;
+	
+	}
+ 	.validate-btn
+ 	 {
+	 border-radius: 5px;
+	 border: 2px solid;
+	 border-color: green;
+	 background-color: transparent;
+		 
+	 }
+    .validate-btn:hover
+	 {
+	 background-color: green;
+	 color:white;
+	 }
+ 
+
 </style>
 <div class="main">
 	<%
@@ -59,7 +79,7 @@
 				<form action='validate' method='post'>
 				<input type='hidden' name='id' value="${user.id }" readonly>
 				<input type='password' name='password'>&nbsp;&nbsp;
-				<button >Validate</button>
+				<button  class="validate-btn" >Validate</button>
 				</form>
 				<span style='color: red;'>Invalid</span></td>
 				</c:if>
@@ -68,7 +88,7 @@
 				<form action='validate' method='post'>
 				<input type='hidden' name='id' value="${user.id }" readonly>
 				<input type='password' name='password'>&nbsp;&nbsp;
-				<button >Validate</button>
+				<button class="validate-btn" >Validate</button>
 				</form>
 				</td>
 				</c:if>
@@ -80,7 +100,7 @@
 				 <form action='newPasswordRequest' method='post'>
 					<input type='hidden' name='id' value="${user.id }" readonly>
 					<input type='password' name='password'>&nbsp;&nbsp;
-					<button >Change</button>
+					<button  class="validate-btn" >Change</button>
 				</form>
 				</td>
 				</tr>

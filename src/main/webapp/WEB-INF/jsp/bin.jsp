@@ -15,16 +15,33 @@
 		display: inline-block;
 		width: 40%;
 		border:1px solid;
-		height: 100vh;
+		height: auto;
+		min-height:100vh;
+		
 	}
 	.main-col-2{
 		width: 60%;
-		display: inline-block;
-		
+		display: inline-block;	
 		border: 1px solid;
-		height: 100vh;
-		
+		height: auto;
+		min-height:100vh;
+	
 	}
+	.heading{
+	
+	background-color: #546b45;
+	color:white;
+	}
+	.mails:hover{
+	background-color: #ffd4fd;
+	
+	
+	}
+	.retrivelink{
+	color:blue;
+	}
+	.deletelink{
+	color:red;}
 	
 </style>
 			<%
@@ -46,19 +63,20 @@
 								</c:if>		
 					<c:if test="${mails.size()>0}">
 					<h6>Bin Box</h6>
-					<table border=4 cellspacing='4' cellpadding='5'>
+					<table border=4 cellspacing='4' cellpadding='5' >
 		
-						<tr>
-						<td>Reciever&nbsp;	&nbsp;</td>
-						<td>SUBJECT</td><th>MESSAGE	&nbsp; 	&nbsp;</td>
-						<td>DATE OF RECIEVING 	&nbsp;	&nbsp;</td>
-						<td>Delete</td>
-						<td>Retrive</td>
+						<tr class="heading">
+						<th>Reciever</th>
+						<th>SUBJECT</th>
+						<th>MESSAGE	</th>
+						<th>DATE OF RECIEVING </th>
+						<th>Delete</th>
+						<th>Retrive</th>
 						</tr>
 			<c:forEach var="m" items="${mails}">	
 		
 		
-		<tr onclick='viewBinMail(${m.id})'>
+		<tr onclick='viewBinMail(${m.id})' class="mails">
 
 		<c:if test="${m.reciever.length()>=5}">
 			<td> ${ m.reciever.substring(0,5)}....</td>
@@ -81,8 +99,8 @@
 			
 		<td><fmt:formatDate type="both" dateStyle="short" timeStyle="short"  value="${m.date}" />  </td>
 		
-		<td><a href='deleteBinboxMail?id=${m.id}'> Delete</a></td>
-		<td><a href='retriveMail?id=${m.id}'>retrive</a></td>
+		<td><a class="deletelink" href='deleteBinboxMail?id=${m.id}'> Delete</a></td>
+		<td><a class="retrivelink" href='retriveMail?id=${m.id}'>retrive</a></td>
 		
 	</tr>
 								

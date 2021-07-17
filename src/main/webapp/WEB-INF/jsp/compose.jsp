@@ -44,10 +44,7 @@
 				border-radius: 5px;
 			}
 		</style>
-			<%
-				if(session.getAttribute("usermail")==null)
-					response.sendRedirect("index");
-			%>
+			
 <div class="main">
 	<div class="main-col-1">
 		<h2>Welcome to Mailservices!</h2>
